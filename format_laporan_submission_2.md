@@ -1,18 +1,22 @@
-# Laporan Proyek Machine Learning - Nama Anda
+# Laporan Proyek Machine Learning - Elfin Darmawan
 
 ## Project Overview
 
-Pada bagian ini, Kamu perlu menuliskan latar belakang yang relevan dengan proyek yang diangkat.
+Dalam era digital saat ini, konsumen dihadapkan pada pilihan film yang sangat banyak, baik melalui platform streaming maupun layanan digital lainnya. Tanpa bantuan sistem rekomendasi, konsumen akan kesulitan menemukan film yang sesuai dengan preferensinya. Oleh karena itu, sistem rekomendasi menjadi solusi penting untuk membantu pengguna menemukan film yang relevan dan menarik.
 
-**Rubrik/Kriteria Tambahan (Opsional)**:
-- Jelaskan mengapa dan bagaimana masalah tersebut harus diselesaikan
-- Menyertakan hasil riset terkait atau referensi. Referensi yang diberikan harus berasal dari sumber yang kredibel dan author yang jelas.
-- Format Referensi dapat mengacu pada penulisan sitasi [IEEE](https://journals.ieeeauthorcenter.ieee.org/wp-content/uploads/sites/7/IEEE_Reference_Guide.pdf), [APA](https://www.mendeley.com/guides/apa-citation-guide/) atau secara umum seperti [di sini](https://penerbitdeepublish.com/menulis-buku-membuat-sitasi-dengan-mudah/)
-- Sumber yang bisa digunakan [Scholar](https://scholar.google.com/)
+### Pentingnya Proyek
+
+Proyek ini bertujuan untuk mengembangkan sistem rekomendasi film yang mampu menyarankan film-film berdasarkan preferensi pengguna. Hal ini sangat bermanfaat untuk meningkatkan user engagement dan kepuasan pengguna pada platform penyedia film.
+
+Referensi
+
+Ricci, F., Rokach, L., & Shapira, B. (2011). Introduction to Recommender Systems Handbook.
+
+Movielens Dataset (GroupLens Research): https://grouplens.org/datasets/movielens/
 
 ## Business Understanding
 
-Pada bagian ini, Anda perlu menjelaskan proses klarifikasi masalah.
+Bagaimana cara merekomendasikan film yang relevan kepada pengguna berdasarkan histori penilaian mereka dan metadata film?
 
 Bagian laporan ini mencakup:
 
