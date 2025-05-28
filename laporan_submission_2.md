@@ -40,7 +40,7 @@ Menggunakan data rating untuk menemukan hubungan antar pengguna dan item untuk m
 
 ## Data Understanding
 
-Dataset yang digunakan dalam proyek ini adalah MovieLens Small Latest Dataset, yang merupakan salah satu dataset benchmark populer untuk membangun dan mengevaluasi sistem rekomendasi. Dataset ini terdiri dari beberapa file utama, yaitu movies.csv, ratings.csv, links.csv, tags.csv. Tapi disini kita hanya menggunakan 2 dataset yaitu movies dan ratings.
+Dataset yang digunakan dalam proyek ini adalah MovieLens Small Latest Dataset, yang merupakan salah satu dataset benchmark populer untuk membangun dan mengevaluasi sistem rekomendasi. Dataset ini terdiri dari beberapa file utama, yaitu movies.csv, ratings.csv, links.csv, tags.csv. Tapi disini kita hanya menggunakan 2 dataset yaitu movies.csv dan ratings.csv.
 
 Dataset: https://www.kaggle.com/datasets/shubhammehta21/movie-lens-small-latest-dataset
 
