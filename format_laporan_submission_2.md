@@ -121,14 +121,147 @@ Jumlah data duplikat: 0
 ```
 Mengecek data duplikat pada dataframe movies dan hasilnya adalah tidak ada data duplikat
 
-- Distribusi Genre Terpopuler
-[
-## Data Preparation
-Pada bagian ini Anda menerapkan dan menyebutkan teknik data preparation yang dilakukan. Teknik yang digunakan pada notebook dan laporan harus berurutan.
+- Distribusi Jumlah Film tiap genre
 
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan proses data preparation yang dilakukan
-- Menjelaskan alasan mengapa diperlukan tahapan data preparation tersebut.
+![genre](plotgenre.png)
+
+Dari plot ini, kita bisa melihat genre-genre yang paling populer (memiliki jumlah film terbanyak) seperti Drama dan Comedy, hingga genre yang paling jarang seperti Film-Noir dan (no genres listed). Plot ini memberikan gambaran visual tentang komposisi genre dalam dataset film.
+
+#### Ratings Variabel
+- Menampilkan 10 data awal dari dataframe ratings menggunakan `.head(10)`
+```bash
+       userId	movieId	rating	timestamp
+0	1	1	4.0	964982703
+1	1	3	4.0	964981247
+2	1	6	4.0	964982224
+3	1	47	5.0	964983815
+4	1	50	5.0	964982931
+5	1	70	3.0	964982400
+6	1	101	5.0	964980868
+7	1	110	4.0	964982176
+8	1	151	5.0	964984041
+9	1	157	5.0	964984100
+```
+Tabel diatas menampilkan 10 baris pertama dari dataframe ratings.
+
+- Menampilkan dan mengecek informasi umum dataset menggunakan `.info`
+```bash
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 100836 entries, 0 to 100835
+Data columns (total 4 columns):
+ #   Column     Non-Null Count   Dtype  
+---  ------     --------------   -----  
+ 0   userId     100836 non-null  int64  
+ 1   movieId    100836 non-null  int64  
+ 2   rating     100836 non-null  float64
+ 3   timestamp  100836 non-null  int64  
+dtypes: float64(1), int64(3)
+```
+Terlihat bahwa tiap kolom pada dataset `ratings.csv` tertera 100836 non-null, menunjukan bahwa tidak ada nilai kosong atau null pada dataset `rating.csv`. Kolom `userId`, `movieId`, `timestamp` memiliki tipe data integer, sedangkan kolom `rating` memiliki tipe data float.
+
+- Melihat statistik deskriptif dari dataset menggunakan `.describe`
+```bash
+        userId	          movieId        rating	         timestamp
+count	100836.000000	100836.000000	100836.000000	1.008360e+05
+mean	326.127564	19435.295718	3.501557	1.205946e+09
+std	182.618491	35530.987199	1.042529	2.162610e+08
+min	1.000000	1.000000	0.500000	8.281246e+08
+25%	177.000000	1199.000000	3.000000	1.019124e+09
+50%	325.000000	2991.000000	3.500000	1.186087e+09
+75%	477.000000	8122.000000	4.000000	1.435994e+09
+max	610.000000	193609.000000	5.000000	1.537799e+09
+```
+Dari statistik tersebut, terdapat 610 pengguna unik yang berbeda dan rating cenderung berada di sekitar 3.5 dengan variasi yang cukup.
+
+- Mengecek Missing Value dan data duplikat menggunakan `.isnull().sum()` dan `.duplicated().sum()`
+```bash
+                0
+userId	        0
+movieId         0
+rating	        0
+timestamp	0
+dtype: int64
+```
+Mengecek nilai null atau kosong, dan hasilnya tidak ada nilai null pada dataset ratings
+
+```bash
+Jumlah data duplikat: 0
+```
+Mengecek data duplikat dan hasilnya tidak ada data yang duplikat pada dataset ratings
+
+- Distribusi Rating Pengguna
+
+![plotratingpengguna](plotratingpengguna.png)
+
+Pada distribusi ini menunjukkan bahwa sebagian besar pengguna memberikan rating yang positif (3 ke atas), dengan fokus terbesar pada rating 4. Adanya pola bimodal (atau multimodal) menyarankan bahwa mungkin ada faktor-faktor berbeda yang mendorong pengguna untuk memberikan rating tertentu. Misalnya, rating 3 bisa jadi rating "standar yang baik", sementara rating 4 bisa jadi rating "luar biasa".
+
+- Distribusi Jumlah Rating Per Film
+
+![plotfilm](plotratingfilm.png)
+
+Distribusi Sangat Miring ke Kanan (Right-Skewed), mayoritas film memiliki jumlah rating yang sangat sedikit. Batang histogram tertinggi berada di dekat angka 0, menunjukkan bahwa ribuan film hanya memiliki sedikit rating (mungkin 1-10 rating). Banyak Film dengan Jumlah Rating Sangat Sedikit, ada sekitar 7.000 film yang memiliki jumlah rating mendekati nol, atau sangat rendah (misalnya, di bawah 10 rating). Ini menunjukkan adanya "long tail" di mana sebagian besar film tidak mendapatkan banyak perhatian atau eksposur.
+
+- Distribusi Jumlah Rating Per User
+
+![plotuser](plotratingperuser.png)
+
+Distribusi Sangat Miring ke Kanan (Right-Skewed), sama seperti distribusi rating per film, distribusi jumlah rating per pengguna juga sangat miring ke kanan. Ini menunjukkan bahwa sebagian besar pengguna hanya memberikan sejumlah kecil rating. Banyak Pengguna dengan Jumlah Rating Sedikit, ada lebih dari 300 pengguna yang memberikan jumlah rating yang sangat rendah (misalnya, di bawah 100 rating). Ini menunjukkan bahwa sebagian besar pengguna mungkin merupakan pengguna "kasual" yang tidak terlalu aktif dalam memberikan rating.
+
+## Data Preparation
+Pada tahap ini adalah proses sistematis untuk mengubah data mentah menjadi bentuk yang bersih, konsisten, dan siap digunakan dalam pemodelan machine learning. Tahap ini dilakukan setelah EDA (Exploratory Data Analysis) dan sebelum pelatihan model. Banyak kasus menunjukkan bahwa model yang bagus tidak akan memberikan hasil optimal jika data yang digunakan tidak dipersiapkan dengan baik. Dari hasil EDA, kita bisa melihat apa saja yang perlu dilakukan selanjutnya agar model optimal.
+
+### Mengubah pemisah pada kolom genre dari pipe ke koma-spasi
+```python
+# Ubah pemisah genre dari pipe ke koma-spasi
+movies['genres'] = movies['genres'].str.replace('|', ', ', regex=False)
+
+# Memastikan bahwa setiap entri dalam kolom 'genres' adalah string
+movies['genres'] = movies['genres'].apply(lambda x: ', '.join(x) if isinstance(x, list) else str(x))
+```
+Baris pertama mengubah pemisah genre dari karakter pipe (|) menjadi koma-spasi (,), menjadikan setiap entri genre sebagai satu string yang dipisahkan oleh ,. Baris kedua kemudian memastikan bahwa setiap entri dalam kolom 'genres' adalah string. Jika ada entri yang masih berupa list (misalnya, jika ada langkah sebelumnya yang menghasilkan list genre), baris ini akan menggabungkannya menjadi satu string yang dipisahkan oleh koma-spasi.
+
+### Menggabungkan dataframe `movies` dan `ratings` berdasarkan movieId
+```python
+# Gabungkan rating dengan info film
+merged_df = ratings.merge(movies, on='movieId')
+```
+Penggabungan ini bertujuan untuk menyatukan data movies dan ratings dalam satu dataframe bernama `merged_df`, dataframe gabungan tersebut digunakan pada encoding dan split data untuk modeling Collaborative Filtering yaitu rekomendasi film berdasarkan rating pengguna.
+
+### Encoding
+```python
+# Buat mapping unik untuk userId dan movieId
+user_ids = merged_df['userId'].unique()
+movie_ids = merged_df['movieId'].unique()
+
+# Mapping dari ID asli ke encoded ID
+user2user_encoded = {x: i for i, x in enumerate(user_ids)}
+movie2movie_encoded = {x: i for i, x in enumerate(movie_ids)}
+
+# Mapping dari encoded ID ke ID asli
+user_encoded2user = {i: x for x, i in user2user_encoded.items()}
+movie_encoded2movie = {i: x for x, i in movie2movie_encoded.items()}
+
+# Tambahkan kolom 'user' dan 'movie' hasil encoding ke merged_df
+merged_df['user'] = merged_df['userId'].map(user2user_encoded)
+merged_df['movie'] = merged_df['movieId'].map(movie2movie_encoded)
+
+# Hitung jumlah unik user dan movie (berguna untuk input size ke model)
+n_users = len(user2user_encoded)
+n_movies = len(movie2movie_encoded)
+```
+Membuat dua kamus (dictionary) yang memetakan ID asli (userId dan movieId) ke ID baru yang di-encode (bilangan bulat berurutan, dimulai dari 0) dan membuat kolom baru bernama `user` dan `movie` yang berisi versi ID yang sudah di encode.
+
+### Data Splitting
+```python
+# Split data untuk model_nn
+x = merged_df[['user', 'movie']].values
+y = merged_df['rating'].values
+x_train, x_val, y_train, y_val = train_test_split(x, y, test_size=0.2, random_state=42)
+```
+```bash
+Ukuran data training: 80668 | Ukuran data validasi: 20168
+```
+Membagi data menjadi 80% data latih dan 20% data validasi, data latih digunakan untuk melatih atau membangun model dan data validasi digunakan untuk mengevaluasi model yang sudah dibangun.
 
 ## Modeling
 Tahapan ini membahas mengenai model sisten rekomendasi yang Anda buat untuk menyelesaikan permasalahan. Sajikan top-N recommendation sebagai output.
