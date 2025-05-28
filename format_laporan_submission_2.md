@@ -317,6 +317,7 @@ Parameter yang digunakan yaitu `embedding_size=20`, `embeddings_initializer=he_n
 
 ### Training Model
 #### Content Based Filtering
+Cukup menggunakan dataset movies untuk CBF, yang memliki kolom `tittle` dan `genres`
 ```python
 # TF-IDF Vectorizer
 tfidf = TfidfVectorizer()
@@ -386,6 +387,7 @@ history = model_nn.fit(
     verbose=1
 )
 ```
+Menginialisasi model untuk Collaborative Filtering menggunakan model RecommenderNet, Ukuran (dimensi) dari vektor embedding yang akan dipelajari untuk setiap pengguna dan film. Parameter yang digunakan yaitu `embedding_size=20`, `embeddings_initializer=he_normal`, `Dense 1=64`, `kernel_regulizer`, `Dropout=0.3`. Lalu melakukan training model dengan menambahkan callbacks.
 
 ### Hasil Modeling
 #### Content Based Filtering
@@ -463,15 +465,51 @@ recommended_df = get_genre_only_recommendations_df("Slacker (1991)", movies, cos
 print("\nTop 10 Rekomendasi Film yang mirip 'Slacker (1991)':")
 display(recommended_df)
 ```
+![evalcbf](evalcbf.png)
+
+$$Precision = \frac{\text{Jumlah rekomendasi yang relevan}}{\text{Jumlah item yang direkomendasikan}} = \frac{10}{10} = 100%$$
+
+Precision = 10/10 = **100%**
+
+Dari hasil evaluasi diatas, bisa dilihat bahwa precision yang didapatkan adalah **100%**, karena film `Slacker (1991)` bergenre Action, Crime, Thriller. Rekomendasi film yang muncul memliki genre yang sama persis dengan `Slacker (1991)` dengan `similarity 1.0` (Tertinggi) dan jumlah film yang memiliki genre sama adalah 10/10 atau **100%**.
+
+### Collaborative Filtering
+#### 1. Mean Absolute Error (MAE)
+MAE mengukur rata-rata dari selisih absolut antara nilai yang diprediksi dan nilai aktual. Dengan kata lain, ini adalah rata-rata besarnya kesalahan tanpa mempertimbangkan arahnya (apakah prediksi terlalu tinggi atau terlalu rendah).
+
+![mae](mae.png)
+
+#### 2. Root Mean Squared Error (RMSE)
+RMSE mengukur akar kuadrat dari rata-rata kuadrat selisih antara nilai yang diprediksi dan nilai aktual. Dengan mengkuadratkan selisih, RMSE memberikan bobot yang lebih besar pada kesalahan yang lebih besar.
+
+![rmse](rmse.png)
+
+```bash
+Evaluasi Model:
+MAE  (Mean Absolute Error): 0.6634
+RMSE (Root Mean Squared Error): 0.8745
 ```
+1. **MAE (Mean Absolute Error):**
+   - Artinya, rata-rata selisih absolut antara rating yang diprediksi model dan rating asli pengguna adalah sekitar 0.6634.
+   - Dalam konteks rating film (biasanya skala 0–5), ini cukup baik, karena model hanya salah prediksi sekitar ±0.66 poin dari nilai sebenarnya.
 
-Ingatlah, metrik evaluasi yang digunakan harus sesuai dengan konteks data, problem statement, dan solusi yang diinginkan.
+3. **RMSE (Root Mean Squared Error):**
+   - RMSE lebih sensitif terhadap kesalahan besar, karena selisih dikuadratkan.
+   - Nilai 0.8745 menunjukkan prediksi cukup konsisten.
+   - Idealnya, RMSE tidak terlalu jauh dari MAE, dan dalam kasus ini selisih kecil (≈0.21), yang berarti tidak banyak kesalahan prediksi ekstrem.
 
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan formula metrik dan bagaimana metrik tersebut bekerja.
+#### Visualisasi Loss dan MAE
 
-**---Ini adalah bagian akhir laporan---**
+![lossdanmae](lossdanmae.png)
 
-_Catatan:_
-- _Anda dapat menambahkan gambar, kode, atau tabel ke dalam laporan jika diperlukan. Temukan caranya pada contoh dokumen markdown di situs editor [Dillinger](https://dillinger.io/), [Github Guides: Mastering markdown](https://guides.github.com/features/mastering-markdown/), atau sumber lain di internet. Semangat!_
-- Jika terdapat penjelasan yang harus menyertakan code snippet, tuliskan dengan sewajarnya. Tidak perlu menuliskan keseluruhan kode project, cukup bagian yang ingin dijelaskan saja.
+- Train Loss & MAE terus menurun seiring bertambahnya epoch, sehingga model terus belajar dari data training.
+- Validation Loss & MAE stagnan atau sedikit naik setelah beberapa epoch, sehingga model mulai kehilangan kemampuan generalisasi ke data yang tidak dilatih.
+- Terdapat gap antara nilai training dan validation (baik loss maupun MAE).
+
+#### Visualisasi Rating Aktual vs Rating Prediksi
+
+![aktualvsprediksi](aktualvsprediksi.png)
+- **Kecenderungan Akurasi yang Baik (Garis Ideal):** Mayoritas titik-titik data (prediksi) tersebar di sekitar garis putus-putus merah (ideal). Ini menunjukkan bahwa model secara fundamental telah belajar untuk memprediksi rating dengan kecenderungan yang benar. Ketika rating aktual tinggi, prediksi juga cenderung tinggi, dan sebaliknya.
+- **Adanya Sebaran / Kesalahan Prediksi:** Meskipun ada kecenderungan yang baik, titik-titik data tidak sepenuhnya menempel pada garis ideal. Ada sebaran yang cukup jelas. Ini berarti model tidak selalu memprediksi rating dengan sempurna. Ada perbedaan antara rating yang sebenarnya diberikan pengguna dan rating yang diprediksi oleh model.
+- Karena model memiliki kecenderungan akurasi yang baik, sebagian besar rekomendasi film yang diberikan oleh sistem akan cukup relevan bagi pengguna. Jika pengguna cenderung menyukai film action, model akan cenderung memprediksi rating tinggi untuk film action baru, dan rekomendasi ini akan diterima dengan baik. Ini membangun kepercayaan pengguna terhadap sistem.
+
