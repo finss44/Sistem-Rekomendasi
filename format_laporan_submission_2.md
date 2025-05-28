@@ -35,7 +35,7 @@ Proyek ini mengimplementasikan dua pendekatan:
 - **Content-Based Filtering (TF-IDF + Cosine Similarity)**
 Menggunakan informasi genre dari film untuk merekomendasikan film serupa berdasarkan kesukaan pengguna.
 - **Collaborative Filtering (Neural Network-based Embedding Model)**
-Menggunakan data rating untuk menemukan hubungan antar pengguna dan item untuk menampilkan rekomendasi film yang kemungkinan akan disukai oleh pengguna berdasarkan data rating.
+Menggunakan data rating untuk menemukan hubungan antar pengguna dan item untuk menampilkan rekomendasi film yang kemungkinan akan disukai oleh pengguna.
 
 
 ## Data Understanding
