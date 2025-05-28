@@ -473,7 +473,7 @@ $$Precision = \frac{\text{Jumlah rekomendasi yang relevan}}{\text{Jumlah item ya
 
 Precision = 10/10 = **100%**
 
-Dari hasil evaluasi diatas, bisa dilihat bahwa precision yang didapatkan adalah **100%**, karena film `Slacker (1991)` bergenre Action, Crime, Thriller. Rekomendasi film yang muncul memliki genre yang sama persis dengan `Slacker (1991)` dengan `similarity 1.0` (Tertinggi) dan jumlah film yang memiliki genre sama adalah 10/10 atau **100%**. Sehingga model tersebut sangat baik untuk memberikan rekomendasi film berdasarkan genre yang disukai oleh pengguna.
+Dari hasil evaluasi diatas, bisa dilihat bahwa precision yang didapatkan adalah **100%**, karena film `Slacker (1991)` bergenre Comedy, Drama. Rekomendasi film yang muncul memliki genre yang sama persis dengan `Slacker (1991)` dengan `similarity 1.0` (Tertinggi) dan jumlah film yang memiliki genre sama adalah 10/10 atau **100%**. Sehingga model tersebut sangat baik untuk memberikan rekomendasi film berdasarkan genre yang disukai oleh pengguna.
 
 ### Collaborative Filtering
 #### 1. Mean Absolute Error (MAE)
