@@ -251,6 +251,8 @@ n_movies = len(movie2movie_encoded)
 ```
 Membuat dua kamus (dictionary) yang memetakan ID asli (userId dan movieId) ke ID baru yang di-encode (bilangan bulat berurutan, dimulai dari 0) dan membuat kolom baru bernama `user` dan `movie` yang berisi versi ID yang sudah di encode.
 
+![merged](mergeddf.png)
+
 ### Data Splitting
 ```python
 # Split data untuk model_nn
@@ -264,14 +266,204 @@ Ukuran data training: 80668 | Ukuran data validasi: 20168
 Membagi data menjadi 80% data latih dan 20% data validasi, data latih digunakan untuk melatih atau membangun model dan data validasi digunakan untuk mengevaluasi model yang sudah dibangun.
 
 ## Modeling
-Tahapan ini membahas mengenai model sisten rekomendasi yang Anda buat untuk menyelesaikan permasalahan. Sajikan top-N recommendation sebagai output.
+Pada tahap ini, kita akan membangun dua jenis sistem rekomendasi yang berbeda:
 
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menyajikan dua solusi rekomendasi dengan algoritma yang berbeda.
-- Menjelaskan kelebihan dan kekurangan dari solusi/pendekatan yang dipilih.
+### 1. Content-Based Filtering 
+
+Merekomendasikan item berdasarkan atribut atau konten item itu sendiri. Di sini kita akan menggunakan fitur teks (genre) dan menghitung kemiripan antar film.
+#### Vektorisasi Teks (TF-IDF): Mengubah teks (genre) menjadi representasi numerik yang dapat diproses oleh komputer. TF-IDF adalah teknik pembobotan statistik yang digunakan untuk mengevaluasi seberapa penting sebuah kata dalam dokumen dalam sebuah korpus. Semakin tinggi nilai TF-IDF suatu kata, semakin relevan kata tersebut terhadap dokumen tertentu dalam korpus tersebut.
+
+$$TFIDF(t, d, D) = TF(t, d) \times IDF(t, D)$$
+
+Di mana:
+* `TFIDF(t, d, D)` adalah nilai TF-IDF untuk term `t` dalam dokumen `d` dari korpus `D`.
+* `TF(t, d)` (**Term Frequency**) mengukur seberapa sering term `t` muncul dalam dokumen `d`. Semakin sering term muncul, semakin tinggi nilainya.
+* `IDF(t, D)` (**Inverse Document Frequency**) mengukur seberapa penting term `t` di seluruh korpus `D`. Nilai ini lebih tinggi untuk term yang jarang muncul di seluruh korpus, menunjukkan bahwa term tersebut lebih spesifik dan diskriminatif.
+
+#### Menghitung Kemiripan (Cosine Similarity): Setelah genre direpresentasikan sebagai vektor TF-IDF, kita dapat menghitung kemiripan antara dua film menggunakan Cosine Similarity. Cosine Similarity mengukur kosinus sudut antara dua vektor. Semakin kecil sudutnya (semakin dekat ke 0), semakin tinggi kemiripannya (nilai mendekati 1). 
+
+$$similarity(\mathbf{A}, \mathbf{B}) = \cos(\theta) = \frac{\mathbf{A} \cdot \mathbf{B}}{\|\mathbf{A}\| \|\mathbf{B}\|} = \frac{\sum_{i=1}^{n} A_i B_i}{\sqrt{\sum_{i=1}^{n} A_i^2} \sqrt{\sum_{i=1}^{n} B_i^2}}$$
+
+Di mana:
+* $\mathbf{A}$ dan $\mathbf{B}$ adalah dua vektor yang sedang diukur kesamaannya (misalnya, vektor rating pengguna atau vektor fitur item).
+* $A_i$ dan $B_i$ adalah komponen individual dari vektor $\mathbf{A}$ dan $\mathbf{B}$ pada dimensi $i$.
+* $\mathbf{A} \cdot \mathbf{B}$ adalah produk titik (dot product) dari vektor $\mathbf{A}$ dan $\mathbf{B}$.
+* $\|\mathbf{A}\|$ dan $\|\mathbf{B}\|$ adalah magnitudo (panjang Euclidean) dari vektor $\mathbf{A}$ dan $\mathbf{B}$.
+
+- **Kelebihan:**
+  - Tidak tergantung pada data pengguna lain.
+  - Tidak rentan terhadap cold-start untuk item.
+
+- **Kekurangan:** 
+  - Tidak mampu merekomendasikan jika tidak ada metadata.
+  - Tidak Mampu Merekomendasikan Item Berdasarkan Preferensi Sosial.
+
+### 2. Collaborative Filtering
+
+Merekomendasikan item berdasarkan preferensi pengguna lain yang mirip atau pola rating yang sama. Kita akan menggunakan pendekatan berbasis Deep Learning (Recommender Net). Model tersebut akan secara otomatis mempelajari representasi yang menangkap kesamaan antara pengguna dan item.
+
+Parameter yang digunakan yaitu `embedding_size=20`, `embeddings_initializer=he_normal`, `Dense 1=64`, `kernel_regulizer`, `Dropout=0.3`. 
+
+- **Kelebihan:** 
+  - Memanfaatkan pola rating pengguna lain.
+  - Menemukan pola kompleks antar pengguna.
+  - Tidak membutuhkan metadata.
+  - Top-N rekomendasi yang akurat.
+
+- **Kekurangan:**
+  - Cold start problem jika user atau item baru.
+  - Butuh banyak data.
+  - Lebih kompleks dan mahal secara komputasi
+
+### Training Model
+#### Content Based Filtering
+```python
+# TF-IDF Vectorizer
+tfidf = TfidfVectorizer()
+tfidf_matrix = tfidf.fit_transform(movies['genres'])
+```
+Tahap ini digunakan untuk mengubah data teks (dalam hal ini, genre film) menjadi format numerik yang dapat dipahami dan diproses oleh algoritma machine learning. Teknik yang digunakan adalah TF-IDF (Term Frequency-Inverse Document Frequency) Vectorization.
+```python
+# Hitung cosine similarity antar film
+cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
+```
+Menghitung kemiripan kosinus (Cosine Similarity) antara semua pasangan film berdasarkan representasi TF-IDF genre.
+```python
+# Membuat fungsi untuk rekomendasi film berdasarkan genre
+def content_based_recommend(title, top_n=10):
+    idx = movies[movies['title'].str.lower() == title.lower()].index
+    if idx.empty:
+        return "Film tidak ditemukan."
+    idx = idx[0]
+    sim_scores = list(enumerate(cosine_sim[idx]))
+    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+    sim_scores = sim_scores[1:top_n+1]
+    movie_indices = [i[0] for i in sim_scores]
+    return movies.iloc[movie_indices][['title', 'genres']]
+```
+Ini merupakan fungsi model untuk melihat hasil dari Modeling Content Based menggunakan TF-IDF dan cosine similarity. Selanjutnya melakukan pemanggilan fungsi untuk melihat hasil model yang telah dibuat dengan memanggil cosine_sim.
+
+#### Collaborative Filtering (RecommenderNet)
+```python
+# Inisialisasi Model yang digunakan untuk Collaborative Filtering menggunakan RecomenderNet
+class RecommenderNet(Model):
+    def __init__(self, num_users, num_movies, embedding_size=20, **kwargs):
+        super(RecommenderNet, self).__init__(**kwargs)
+        self.user_embedding = Embedding(num_users, embedding_size, embeddings_initializer='he_normal')
+        self.movie_embedding = Embedding(num_movies, embedding_size, embeddings_initializer='he_normal')
+        self.concat = Concatenate()
+        self.dense1 = Dense(64, activation='relu', kernel_regularizer=regularizers.l2(1e-4))
+        self.dropout = Dropout(0.3)
+        self.dense2 = Dense(1)
+
+    def call(self, inputs):
+        user_vector = self.user_embedding(inputs[:, 0])
+        movie_vector = self.movie_embedding(inputs[:, 1])
+        x = self.concat([user_vector, movie_vector])
+        x = self.dense1(x)
+        x = self.dropout(x)
+        return self.dense2(x)
+
+# Compile model
+model_nn = RecommenderNet(n_users, n_movies)
+model_nn.compile(
+    loss='mean_squared_error',
+    optimizer='adam',
+    metrics=['mae']
+)
+
+# Callbacks EarlyStopping
+early_stop = EarlyStopping(monitor='val_mae', patience=5, restore_best_weights=True)
+
+# Training
+history = model_nn.fit(
+    x_train,
+    y_train,
+    epochs=100,
+    batch_size=128,
+    validation_data=(x_val, y_val),
+    callbacks=[early_stop],
+    verbose=1
+)
+```
+
+### Hasil Modeling
+#### Content Based Filtering
+```
+Top 10 Rekomendasi Film yang mirip 'Slacker (1991)':
+
+                                          title         genres
+67                             Big Bully (1996)  Comedy, Drama
+74              Antonia's Line (Antonia) (1995)  Comedy, Drama
+85                In the Bleak Midwinter (1995)  Comedy, Drama
+94   Nobody Loves Me (Keiner liebt mich) (1994)  Comedy, Drama
+129                     Blue in the Face (1995)  Comedy, Drama
+143                              Jeffrey (1995)  Comedy, Drama
+150                 Love & Human Remains (1993)  Comedy, Drama
+164                                Smoke (1995)  Comedy, Drama
+173                      Unstrung Heroes (1995)  Comedy, Drama
+186                     Boys on the Side (1995)  Comedy, Drama
+```
+Diatas adalah demonstrasi fungsional dari sistem rekomendasi film berbasis genre yang dibangun. Ini menunjukkan bahwa ketika kita meminta rekomendasi untuk Film berjudul "Slacker (1991)", sistem berhasil mengidentifikasi dan menampilkan 10 film lain yang memiliki profil genre yang sangat serupa, memvalidasi bahwa fungsi model yang dibangun bekerja sesuai harapan.
+
+#### Collaborative Filtering
+```
+🎬 Rekomendasi untuk User ID: 5
+[INFO] Total film belum ditonton: 9680
+10 film yang direkomendasikan (yang belum ditonton):
+
+                     title	                                        genres
+1	Henry Fool (1997)	                                   Comedy, Drama
+2	Lord of the Rings: The Fellowship of the Ring,...	   Adventure, Fantasy
+3	City of God (Cidade de Deus) (2002)	                   Action, Adventure, Crime, Drama, Thriller
+4	All the President's Men (1976)	                           Drama, Thriller
+5	Human Condition III, The (Ningen no joken III)...	   Drama, War
+6	Unfinished Life, An (2005)	                           Drama
+7	Thank You for Smoking (2006)	                           Comedy, Drama
+8	I'm Not There (2007)	                                   Drama
+9	Sound of the Mountain (Thunder of the Mountain...	   Drama
+10	Ricky Gervais Live: Animals (2003)	                   Comedy
+```
+Hasil ini menunjukkan bahwa model Collaborative Filtering telah berhasil mengeluarkan 10 film yang belum ditonton oleh `User ID 5`, namun diprediksi memiliki rating tinggi jika ditonton. Total film yang belum ditonton oleh user adalah 9680. Film-film yang direkomendasikan mencakup berbagai genre, namun dari hasil tersebut didominasi oleh genre `Drama`. Hal ini mengindikasikan bahwa user ini atau user-user yang mirip dengannya menyukai film yang realistis dan emosional. Jika User ID 5 memiliki pola preferensi yang mirip dengan pengguna lain yang menyukai film-film ini, maka film-film ini akan direkomendasikan.
 
 ## Evaluation
-Pada bagian ini Anda perlu menyebutkan metrik evaluasi yang digunakan. Kemudian, jelaskan hasil proyek berdasarkan metrik evaluasi tersebut.
+### Content Based Filtering
+Untuk evaluasi model Content Based Filtering, hampir sama menggunakan output model diatas tetapi hanya beda film. Sehingga menentukan precision secara manual berdasarkan genre yang sama dengan film tersebut.
+
+```python
+def get_genre_only_recommendations_df(movie_title, movies_df, cosine_sim, top_n=10):
+    # Cari index film berdasarkan judul (tanpa case sensitivity)
+    indices = movies_df[movies_df['title'].str.lower() == movie_title.lower()].index
+    if indices.empty:
+        print(f"Film '{movie_title}' tidak ditemukan.")
+        return pd.DataFrame(columns=['title', 'genres', 'similarity'])
+
+    idx = indices[0]
+
+    # Hitung skor kemiripan
+    sim_scores = list(enumerate(cosine_sim[idx]))
+    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+
+    # Ambil top_n hasil teratas (kecuali film itu sendiri)
+    sim_scores = sim_scores[1:top_n+1]
+    movie_indices = [i for i, _ in sim_scores]
+    similarity_scores = [score for _, score in sim_scores]
+
+    # Ambil data film yang direkomendasikan
+    recommended = movies_df.iloc[movie_indices][['title', 'genres']].copy()
+    recommended['similarity'] = similarity_scores
+
+    # Reset index agar rapi
+    recommended.reset_index(drop=True, inplace=True)
+
+    return recommended
+```
+```python
+recommended_df = get_genre_only_recommendations_df("Slacker (1991)", movies, cosine_sim)
+print("\nTop 10 Rekomendasi Film yang mirip 'Slacker (1991)':")
+display(recommended_df)
+```
+```
 
 Ingatlah, metrik evaluasi yang digunakan harus sesuai dengan konteks data, problem statement, dan solusi yang diinginkan.
 
