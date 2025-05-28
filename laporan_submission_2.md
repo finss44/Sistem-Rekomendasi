@@ -14,11 +14,11 @@ Dalam era digital saat ini, konsumen dihadapkan pada pilihan film yang sangat ba
 
 ### Referensi:
 
-Ricci, F., Rokach, L., & Shapira, B. (2011). Introduction to Recommender Systems Handbook.
+Rida, M., Fatima, S., & Fatima, S. (2024). *Content based filtering and collaborative filtering: A comparative study*. ResearchGate. https://www.researchgate.net/publication/378841543_Content_Based_Filtering_And_Collaborative_Filtering_A_Comparative_Study
 
-Shani, G., & Gunawardana, A. (2011). Evaluating Recommendation Systems. In Recommender Systems Handbook, Springer.
+Aziz, A., & Rahman, M. (2023). *Evaluating performances of content-based and collaborative filtering. Oxford Journal of Data Science*. https://www.oxjournal.org/content-based-collaborative-filtering/
 
-Aggarwal, C. C. (2016). Recommender Systems: The Textbook. Springer.
+Singh, A., & Garg, H. (2022). *A systematic review and research perspective on recommender systems. Journal of Big Data, 9*(1), 1–40. https://journalofbigdata.springeropen.com/articles/10.1186/s40537-022-00592-5
 
 ## Business Understanding
 ### Problem Statements
