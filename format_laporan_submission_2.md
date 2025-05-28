@@ -508,13 +508,6 @@ RMSE (Root Mean Squared Error): 0.8745
 - Validation Loss & MAE stagnan atau sedikit naik setelah beberapa epoch, sehingga model mulai kehilangan kemampuan generalisasi ke data yang tidak dilatih.
 - Terdapat gap antara nilai training dan validation (baik loss maupun MAE).
 
-#### Visualisasi Rating Aktual vs Rating Prediksi
-
-![aktualvsprediksi](aktualvsprediksi.png)
-- **Kecenderungan Akurasi yang Baik (Garis Ideal):** Mayoritas titik-titik data (prediksi) tersebar di sekitar garis putus-putus merah (ideal). Ini menunjukkan bahwa model secara fundamental telah belajar untuk memprediksi rating dengan kecenderungan yang benar. Ketika rating aktual tinggi, prediksi juga cenderung tinggi, dan sebaliknya.
-- **Adanya Sebaran / Kesalahan Prediksi:** Meskipun ada kecenderungan yang baik, titik-titik data tidak sepenuhnya menempel pada garis ideal. Ada sebaran yang cukup jelas. Ini berarti model tidak selalu memprediksi rating dengan sempurna. Ada perbedaan antara rating yang sebenarnya diberikan pengguna dan rating yang diprediksi oleh model.
-- Karena model memiliki kecenderungan akurasi yang baik, sebagian besar rekomendasi film yang diberikan oleh sistem akan cukup relevan bagi pengguna. Jika pengguna cenderung menyukai film action, model akan cenderung memprediksi rating tinggi untuk film action baru, dan rekomendasi ini akan diterima dengan baik. Ini membangun kepercayaan pengguna terhadap sistem.
-
 ## Kesimpulan
 Proyek ini berhasil mengembangkan sistem rekomendasi film yang mampu menyarankan Top-N film yang relevan bagi pengguna berdasarkan preferensi dan riwayat interaksi mereka. Dua pendekatan yang diterapkan—Content-Based Filtering dan Collaborative Filtering berbasis Neural Network—mampu memberikan rekomendasi dengan keunggulan masing-masing.
 
