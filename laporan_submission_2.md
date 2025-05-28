@@ -432,8 +432,7 @@ Hasil ini menunjukkan bahwa model Collaborative Filtering telah berhasil mengelu
 
 ## Evaluation
 ### Content Based Filtering
-Untuk evaluasi model Content Based Filtering, hampir sama menggunakan output model diatas tetapi hanya beda film. Sehingga menentukan precision secara manual berdasarkan genre yang sama dengan film tersebut.
-
+Untuk evaluasi model Content Based Filtering, hampir sama menggunakan output model diatas tetapi hanya beda fungsi untuk menampilkan similarity. Lalu menentukan precision secara manual berdasarkan genre yang sama dengan film tersebut.
 ```python
 def get_genre_only_recommendations_df(movie_title, movies_df, cosine_sim, top_n=10):
     # Cari index film berdasarkan judul (tanpa case sensitivity)
