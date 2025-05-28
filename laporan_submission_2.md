@@ -23,11 +23,11 @@ Aggarwal, C. C. (2016). Recommender Systems: The Textbook. Springer.
 ## Business Understanding
 ### Problem Statements
 
-Pengguna sering kali kesulitan memilih film yang sesuai dengan preferensi mereka karena banyaknya pilihan yang tersedia. Diperlukan sistem yang mampu merekomendasikan film secara akurat berdasarkan kemiripan isi film dan minat pengguna.
+Pengguna sering kali kesulitan memilih film yang sesuai dengan preferensi mereka karena banyaknya pilihan yang tersedia. Tanpa bantuan sistem yang cerdas, pengguna bisa merasa kewalahan dan akhirnya tidak mendapatkan pengalaman menonton yang optimal. Oleh karena itu, diperlukan sistem yang mampu merekomendasikan film secara akurat berdasarkan kemiripan isi film dan minat pengguna. 
 
 ### Goals
 
-Membangun sistem rekomendasi yang mampu memberikan Top-N rekomendasi film yang sesuai dengan minat pengguna secara otomatis dan personal.
+Membangun sistem rekomendasi yang mampu memberikan Top-N rekomendasi film yang sesuai dengan minat pengguna secara otomatis dan personal. Selain itu, mendukung pengguna dalam mengeksplorasi film baru yang sesuai dengan selera mereka.
 
 ### Solution statements
 
