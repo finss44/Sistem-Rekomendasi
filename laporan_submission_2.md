@@ -428,7 +428,7 @@ Diatas adalah demonstrasi fungsional dari sistem rekomendasi film berbasis genre
 9	Sound of the Mountain (Thunder of the Mountain...	   Drama
 10	Ricky Gervais Live: Animals (2003)	                   Comedy
 ```
-Hasil ini menunjukkan bahwa model Collaborative Filtering telah berhasil mengeluarkan 10 film yang belum ditonton oleh `User ID 5`, namun diprediksi memiliki rating tinggi jika ditonton. Total film yang belum ditonton oleh user adalah 9680. Film-film yang direkomendasikan mencakup berbagai genre, namun dari hasil tersebut didominasi oleh genre `Drama`. Hal ini mengindikasikan bahwa user ini atau user-user yang mirip dengannya menyukai film yang realistis dan emosional. Jika User ID 5 memiliki pola preferensi yang mirip dengan pengguna lain yang menyukai film-film ini, maka film-film ini akan direkomendasikan.
+Hasil ini menunjukkan bahwa model Collaborative Filtering telah berhasil mengeluarkan 10 film yang belum ditonton oleh `User ID 5`, namun diprediksi memiliki rating tinggi jika ditonton. Total film yang belum ditonton oleh user adalah 9680. Film-film yang direkomendasikan mencakup berbagai genre, namun dari hasil tersebut didominasi oleh film yang mengandung genre `Drama`. Hal ini mengindikasikan bahwa user ini atau user-user yang mirip dengannya menyukai film yang realistis dan emosional. Jika User ID 5 memiliki pola preferensi yang mirip dengan pengguna lain yang menyukai film-film ini, maka film-film ini akan direkomendasikan.
 
 ## Evaluation
 ### Content Based Filtering
