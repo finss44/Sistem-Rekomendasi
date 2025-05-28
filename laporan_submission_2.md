@@ -473,7 +473,7 @@ $$Precision = \frac{\text{Jumlah rekomendasi yang relevan}}{\text{Jumlah item ya
 
 Precision = 10/10 = **100%**
 
-Dari hasil evaluasi diatas, bisa dilihat bahwa precision yang didapatkan adalah **100%**, karena film `Slacker (1991)` bergenre Action, Crime, Thriller. Rekomendasi film yang muncul memliki genre yang sama persis dengan `Slacker (1991)` dengan `similarity 1.0` (Tertinggi) dan jumlah film yang memiliki genre sama adalah 10/10 atau **100%**.
+Dari hasil evaluasi diatas, bisa dilihat bahwa precision yang didapatkan adalah **100%**, karena film `Slacker (1991)` bergenre Action, Crime, Thriller. Rekomendasi film yang muncul memliki genre yang sama persis dengan `Slacker (1991)` dengan `similarity 1.0` (Tertinggi) dan jumlah film yang memiliki genre sama adalah 10/10 atau **100%**. Sehingga model tersebut sangat baik untuk memberikan rekomendasi film berdasarkan genre yang disukai oleh pengguna.
 
 ### Collaborative Filtering
 #### 1. Mean Absolute Error (MAE)
@@ -509,10 +509,18 @@ RMSE (Root Mean Squared Error): 0.8745
 - Terdapat gap antara nilai training dan validation (baik loss maupun MAE).
 
 ## Kesimpulan
-Proyek ini berhasil mengembangkan sistem rekomendasi film yang mampu menyarankan Top-N film yang relevan bagi pengguna berdasarkan preferensi dan riwayat interaksi mereka. Dua pendekatan yang diterapkan—Content-Based Filtering dan Collaborative Filtering berbasis Neural Network—mampu memberikan rekomendasi dengan keunggulan masing-masing.
+Proyek ini berhasil mengembangkan sistem rekomendasi film yang mampu menyarankan Top-N film yang relevan bagi pengguna berdasarkan preferensi dan riwayat interaksi mereka. Dua pendekatan yang diterapkan telah memenuhi permasalahan dengan mengembangkan solution statements yaitu membangun model sistem rekomendasi Content-Based Filtering (TF-IDF dan Cosine Similarity) dan Collaborative Filtering berbasis Neural Network mampu memberikan rekomendasi dengan keunggulan masing-masing.
 
 - Content-Based Filtering efektif dalam memberikan rekomendasi yang konsisten dan relevan secara tematik berdasarkan genre film yang disukai pengguna. Pendekatan ini cocok untuk pengguna baru, namun cenderung memberikan saran yang terlalu mirip dengan preferensi sebelumnya (kurang eksploratif).
-- Collaborative Filtering menggunakan embedding model untuk mempelajari pola laten dari data rating. Pendekatan ini mampu memberikan saran yang lebih bervariasi dan akurat bagi pengguna yang memiliki riwayat interaksi cukup, meskipun menghadapi tantangan pada cold-start problem.
+- Collaborative Filtering menggunakan embedding model untuk mempelajari pola laten dari data rating. Pendekatan ini mampu memberikan saran yang lebih bervariasi dan cuku[ akurat bagi pengguna yang memiliki riwayat interaksi cukup, meskipun menghadapi tantangan pada cold-start problem.
 
-Hasil evaluasi menunjukkan bahwa kedua pendekatan dapat saling melengkapi. Dengan kombinasi pendekatan berbasis konten dan perilaku pengguna, sistem rekomendasi yang dikembangkan mampu meningkatkan personalisasi dan pengalaman pengguna secara keseluruhan.
+Hasil evaluasi menunjukkan bahwa kedua pendekatan dapat saling melengkapi. Dengan kombinasi pendekatan berbasis konten dan perilaku pengguna, sistem rekomendasi yang dikembangkan mampu meningkatkan personalisasi dan pengalaman pengguna secara keseluruhan. Sehingga proyek ini sudah mencapai goalsnya yaitu memberikan rekomendasi film Top-N Rekomendasi Film berdasarkan film atau genre kesukaan dan minat secara personal.
 
+## Rekomendasi
+- Meningkatkan kembali model Collaborative Filtering agar lebih presisi untuk memprediksi.
+- Tuning Hyperparameter Model:
+  - Ukuran embedding layer.
+  - Penambahan dropout/regularizer.
+  - Ukuran batch dan learning rate.
+- Model yang lebih kompleks dapat meningkatkan akurasi
+- Menggunakan Hybrid Filtering, yaitu menggabungkan 2 model content based dan collaborative.
