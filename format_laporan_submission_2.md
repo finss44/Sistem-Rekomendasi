@@ -16,7 +16,9 @@ Dalam era digital saat ini, konsumen dihadapkan pada pilihan film yang sangat ba
 
 Ricci, F., Rokach, L., & Shapira, B. (2011). Introduction to Recommender Systems Handbook.
 
-Movielens Dataset (GroupLens Research): https://grouplens.org/datasets/movielens/
+Shani, G., & Gunawardana, A. (2011). Evaluating Recommendation Systems. In Recommender Systems Handbook, Springer.
+
+Aggarwal, C. C. (2016). Recommender Systems: The Textbook. Springer.
 
 ## Business Understanding
 ### Problem Statements
@@ -33,7 +35,7 @@ Proyek ini mengimplementasikan dua pendekatan:
 - **Content-Based Filtering (TF-IDF + Cosine Similarity)**
 Menggunakan informasi genre dari film untuk merekomendasikan film serupa berdasarkan kesukaan pengguna.
 - **Collaborative Filtering (Neural Network-based Embedding Model)**
-Menggunakan data rating untuk menemukan hubungan antar pengguna dan item untuk menampilkan rekomendasi film yang kemungkinan akan disukai oleh pengguna berdasarkan rating.
+Menggunakan data rating untuk menemukan hubungan antar pengguna dan item untuk menampilkan rekomendasi film yang kemungkinan akan disukai oleh pengguna berdasarkan data rating.
 
 
 ## Data Understanding
@@ -512,4 +514,12 @@ RMSE (Root Mean Squared Error): 0.8745
 - **Kecenderungan Akurasi yang Baik (Garis Ideal):** Mayoritas titik-titik data (prediksi) tersebar di sekitar garis putus-putus merah (ideal). Ini menunjukkan bahwa model secara fundamental telah belajar untuk memprediksi rating dengan kecenderungan yang benar. Ketika rating aktual tinggi, prediksi juga cenderung tinggi, dan sebaliknya.
 - **Adanya Sebaran / Kesalahan Prediksi:** Meskipun ada kecenderungan yang baik, titik-titik data tidak sepenuhnya menempel pada garis ideal. Ada sebaran yang cukup jelas. Ini berarti model tidak selalu memprediksi rating dengan sempurna. Ada perbedaan antara rating yang sebenarnya diberikan pengguna dan rating yang diprediksi oleh model.
 - Karena model memiliki kecenderungan akurasi yang baik, sebagian besar rekomendasi film yang diberikan oleh sistem akan cukup relevan bagi pengguna. Jika pengguna cenderung menyukai film action, model akan cenderung memprediksi rating tinggi untuk film action baru, dan rekomendasi ini akan diterima dengan baik. Ini membangun kepercayaan pengguna terhadap sistem.
+
+## Kesimpulan
+Proyek ini berhasil mengembangkan sistem rekomendasi film yang mampu menyarankan Top-N film yang relevan bagi pengguna berdasarkan preferensi dan riwayat interaksi mereka. Dua pendekatan yang diterapkan—Content-Based Filtering dan Collaborative Filtering berbasis Neural Network—mampu memberikan rekomendasi dengan keunggulan masing-masing.
+
+- Content-Based Filtering efektif dalam memberikan rekomendasi yang konsisten dan relevan secara tematik berdasarkan genre film yang disukai pengguna. Pendekatan ini cocok untuk pengguna baru, namun cenderung memberikan saran yang terlalu mirip dengan preferensi sebelumnya (kurang eksploratif).
+- Collaborative Filtering menggunakan embedding model untuk mempelajari pola laten dari data rating. Pendekatan ini mampu memberikan saran yang lebih bervariasi dan akurat bagi pengguna yang memiliki riwayat interaksi cukup, meskipun menghadapi tantangan pada cold-start problem.
+
+Hasil evaluasi menunjukkan bahwa kedua pendekatan dapat saling melengkapi. Dengan kombinasi pendekatan berbasis konten dan perilaku pengguna, sistem rekomendasi yang dikembangkan mampu meningkatkan personalisasi dan pengalaman pengguna secara keseluruhan.
 
