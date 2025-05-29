@@ -228,7 +228,7 @@ Duplikat pada ratings: 0
 ```
 Melalukan drop atau penghapusan data duplikat, walaupun sudah dilakukan pengecekan ketika EDA, tetap melakukan penghapusan duplikat data agar lebih valid dan menampilkan hasil penghapusan duplikat data tersebut.
 
-### Mengubah tipe data kolom `timestamp`
+### Mengubah tipe data kolom `timestamp` pada dataset ratings
 ```python
 # Mengubah tipe data timestamp menjadi datetime
 ratings['timestamp'] = pd.to_datetime(ratings['timestamp'], unit='s')
