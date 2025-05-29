@@ -268,15 +268,7 @@ Ukuran data training: 80668 | Ukuran data validasi: 20168
 Membagi data menjadi 80% data latih dan 20% data validasi, data latih digunakan untuk melatih atau membangun model dan data validasi digunakan untuk mengevaluasi model yang sudah dibangun.
 
 ### Vektorisasi Teks (TF-IDF)
-Mengubah teks (genre) menjadi representasi numerik yang dapat diproses oleh komputer. TF-IDF adalah teknik pembobotan statistik yang digunakan untuk mengevaluasi seberapa penting sebuah kata dalam dokumen dalam sebuah korpus. Semakin tinggi nilai TF-IDF suatu kata, semakin relevan kata tersebut terhadap dokumen tertentu dalam korpus tersebut.
-
-Rumus:
-$$TFIDF(t, d, D) = TF(t, d) \times IDF(t, D)$$
-
-Di mana:
-* `TFIDF(t, d, D)` adalah nilai TF-IDF untuk term `t` dalam dokumen `d` dari korpus `D`.
-* `TF(t, d)` (**Term Frequency**) mengukur seberapa sering term `t` muncul dalam dokumen `d`. Semakin sering term muncul, semakin tinggi nilainya.
-* `IDF(t, D)` (**Inverse Document Frequency**) mengukur seberapa penting term `t` di seluruh korpus `D`. Nilai ini lebih tinggi untuk term yang jarang muncul di seluruh korpus, menunjukkan bahwa term tersebut lebih spesifik dan diskriminatif.
+Tahap ini digunakan untuk mengubah data teks (dalam hal ini, genre film) menjadi format numerik yang dapat dipahami dan diproses oleh algoritma machine learning. Teknik yang digunakan adalah TF-IDF (Term Frequency-Inverse Document Frequency) Vectorization.
 
 Cukup menggunakan dataset movies, yang memiliki kolom `tittle` dan `genres` untuk Content Based Filtering
 ```python
@@ -287,7 +279,7 @@ tfidf_matrix = tfidf.fit_transform(movies['genres'])
 # Mengubah vektor tf-idf dalam bentuk matriks dengan fungsi todense()
 tfidf_matrix.todense()
 ```
-Mengonversi representasi tfidf_matrix dari format sparse matrix (matriks jarang) menjadi dense matrix (matriks padat)
+Mengonversi representasi `tfidf_matrix` dari format sparse matrix (matriks jarang) menjadi dense matrix (matriks padat)
 
 ![tfidf](https://github.com/user-attachments/assets/f93ed343-0938-41ac-b7d8-ad6520709ab7)
 
@@ -299,6 +291,16 @@ Pada tahap ini, kita akan membangun dua jenis sistem rekomendasi yang berbeda:
 ### 1. Content-Based Filtering 
 
 Merekomendasikan item berdasarkan atribut atau konten item itu sendiri. Di sini kita akan menggunakan fitur teks (genre) dan menghitung kemiripan antar film.
+#### TF-IDF (Term Frequency-Inverse Document Frequency) Vectorizer
+Mengubah teks (genre) menjadi representasi numerik yang dapat diproses oleh komputer. TF-IDF adalah teknik pembobotan statistik yang digunakan untuk mengevaluasi seberapa penting sebuah kata dalam dokumen dalam sebuah korpus. Semakin tinggi nilai TF-IDF suatu kata, semakin relevan kata tersebut terhadap dokumen tertentu dalam korpus tersebut.
+
+Rumus:
+$$TFIDF(t, d, D) = TF(t, d) \times IDF(t, D)$$
+
+Di mana:
+* `TFIDF(t, d, D)` adalah nilai TF-IDF untuk term `t` dalam dokumen `d` dari korpus `D`.
+* `TF(t, d)` (**Term Frequency**) mengukur seberapa sering term `t` muncul dalam dokumen `d`. Semakin sering term muncul, semakin tinggi nilainya.
+* `IDF(t, D)` (**Inverse Document Frequency**) mengukur seberapa penting term `t` di seluruh korpus `D`. Nilai ini lebih tinggi untuk term yang jarang muncul di seluruh korpus, menunjukkan bahwa term tersebut lebih spesifik dan diskriminatif.
 
 #### Menghitung Kemiripan (Cosine Similarity) 
 Setelah genre direpresentasikan sebagai vektor TF-IDF, kita dapat menghitung kemiripan antara dua film menggunakan Cosine Similarity. Cosine Similarity mengukur kosinus sudut antara dua vektor. Semakin kecil sudutnya (semakin dekat ke 0), semakin tinggi kemiripannya (nilai mendekati 1). 
