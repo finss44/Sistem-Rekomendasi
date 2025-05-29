@@ -265,7 +265,7 @@ movies['genres'] = movies['genres'].str.replace('|', ', ', regex=False)
 # Memastikan bahwa setiap entri dalam kolom 'genres' adalah string
 movies['genres'] = movies['genres'].apply(lambda x: ', '.join(x) if isinstance(x, list) else str(x))
 ```
-Baris pertama mengubah pemisah genre dari karakter pipe (|) menjadi koma-spasi (,), menjadikan setiap entri genre sebagai satu string yang dipisahkan oleh ,. Baris kedua kemudian memastikan bahwa setiap entri dalam kolom 'genres' adalah string. Jika ada entri yang masih berupa list (misalnya, jika ada langkah sebelumnya yang menghasilkan list genre), baris ini akan menggabungkannya menjadi satu string yang dipisahkan oleh koma-spasi.
+Baris pertama mengubah pemisah genre dari karakter pipe (|) menjadi koma-spasi (,), menjadikan setiap entri genre sebagai satu string yang dipisahkan oleh ( , ). Baris kedua kemudian memastikan bahwa setiap entri dalam kolom 'genres' adalah string. Jika ada entri yang masih berupa list (misalnya, jika ada langkah sebelumnya yang menghasilkan list genre), baris ini akan menggabungkannya menjadi satu string yang dipisahkan oleh koma-spasi.
 
 ### Menggabungkan dataframe `movies` dan `ratings` berdasarkan movieId
 ```python
@@ -300,7 +300,7 @@ n_movies = len(movie2movie_encoded)
 Jumlah user unik: 610
 Jumlah movie unik: 9724
 ```
-Membuat dua kamus (dictionary) yang memetakan ID asli (userId dan movieId) ke ID baru yang di-encode (bilangan bulat berurutan, dimulai dari 0) dan membuat kolom baru bernama `user` dan `movie` yang berisi versi ID yang sudah di encode. Lalu melihat jumlah unik `user` dan `movie` yang berguna untuk input size ke model.
+Membuat dua kamus (dictionary) yang memetakan ID asli (userId dan movieId) ke ID baru yang di-encode (bilangan bulat berurutan, dimulai dari 0) dan membuat kolom baru bernama `user` dan `movie` yang berisi versi ID yang sudah di encode. Lalu melihat jumlah unik `user` dan `movie` hasil encoding yang berguna untuk input size ke model.
 
 ### Menampilkan dataframe `merged_df` hasil penggabungan
 ```python
@@ -328,7 +328,7 @@ Pada tahap ini mengubah teks (genre) menjadi representasi numerik yang dapat dip
 Rumus:
 $$TFIDF(t, d, D) = TF(t, d) \times IDF(t, D)$$
 
-Cukup menggunakan dataset movies, yang memiliki kolom `tittle` dan `genres` untuk Content Based Filtering
+Cukup menggunakan dataset movies, yang memiliki kolom `tittle` dan `genres` untuk Content Based Filtering.
 ```python
 # TF-IDF Vectorizer
 tfidf = TfidfVectorizer()
@@ -337,11 +337,11 @@ tfidf_matrix = tfidf.fit_transform(movies['genres'])
 # Mengubah vektor tf-idf dalam bentuk matriks dengan fungsi todense()
 tfidf_matrix.todense()
 ```
-Mengonversi representasi `tfidf_matrix` dari format sparse matrix (matriks jarang) menjadi dense matrix (matriks padat)
+Mengonversi representasi `tfidf_matrix` dari format sparse matrix (matriks jarang) menjadi dense matrix (matriks padat).
 
 ![tfidf](https://github.com/user-attachments/assets/f93ed343-0938-41ac-b7d8-ad6520709ab7)
 
-Gambar diatas adalah hasil representasi menggunakan `.todense()`
+Gambar diatas adalah hasil representasi menggunakan `.todense()`.
 
 ## Modeling
 Pada tahap ini, kita akan membangun dua jenis sistem rekomendasi yang berbeda:
