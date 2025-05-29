@@ -212,6 +212,51 @@ Distribusi Sangat Miring ke Kanan (Right-Skewed), sama seperti distribusi rating
 ## Data Preparation
 Pada tahap ini adalah proses sistematis untuk mengubah data mentah menjadi bentuk yang bersih, konsisten, dan siap digunakan dalam pemodelan machine learning. Tahap ini dilakukan setelah EDA (Exploratory Data Analysis) dan sebelum pelatihan model. Banyak kasus menunjukkan bahwa model yang bagus tidak akan memberikan hasil optimal jika data yang digunakan tidak dipersiapkan dengan baik. Dari hasil EDA, kita bisa melihat apa saja yang perlu dilakukan selanjutnya agar model optimal.
 
+###  Menghapus duplikasi pada masing-masing dataset
+```python
+# Movies
+print("Duplikat pada movies:", movies.duplicated().sum())
+movies.drop_duplicates(inplace=True)
+
+# Ratings
+print("Duplikat pada ratings:", ratings.duplicated().sum())
+ratings.drop_duplicates(inplace=True)
+```
+```bash
+Duplikat pada movies: 0
+Duplikat pada ratings: 0
+```
+Melalukan drop atau penghapusan data duplikat, walaupun sudah dilakukan pengecekan ketika EDA, tetap melakukan penghapusan duplikat data agar lebih valid dan menampilkan hasil duplikat data tersebut.
+
+### Mengubah tipe data kolom `timestamp`
+```python
+# Mengubah tipe data timestamp menjadi datetime
+ratings['timestamp'] = pd.to_datetime(ratings['timestamp'], unit='s')
+```
+Lalu merubah tipe data kolom `'timestamp'` dari integer menjadi datetime, sehingga angka yang terlihat pada dataframe adalah waktu atau tanggal pengambilan data.
+
+### Menampilkan tipe data pada kolom `genres`
+```python
+# Melihat tipe data kolom genres
+print(movies['genres'].head())
+print(movies['genres'].apply(type).value_counts())
+```
+```bash
+0    Adventure|Animation|Children|Comedy|Fantasy
+1                     Adventure|Children|Fantasy
+2                                 Comedy|Romance
+3                           Comedy|Drama|Romance
+4                                         Comedy
+Name: genres, dtype: object
+genres
+<class 'str'>    9742
+```
+Selanjutnya melihat tipe data pada kolom genre:
+- Struktur Kolom 'genres': Output dari movies['genres'].head() menunjukkan bahwa kolom 'genres' berisi string, di mana setiap genre dipisahkan oleh karakter pipa (|). Contohnya: "Adventure|Animation|Children|Comedy|Fantasy".
+- Tipe Data Kolom 'genres':
+  - Name: genres, dtype: object: Ini menunjukkan bahwa kolom genres di dalam DataFrame movies memiliki tipe data object. Dalam Pandas, tipe object seringkali berarti kolom tersebut berisi string atau tipe data campuran lainnya.
+  - <class 'str'> 9742: Output dari movies['genres'].apply(type).value_counts() lebih spesifik. Ini mengkonfirmasi bahwa semua 9742 entri (baris) dalam kolom 'genres' adalah objek bertipe string (<class 'str'>). Ini penting karena memastikan konsistensi tipe data sebelum melakukan pemrosesan teks lebih lanjut.
+
 ### Mengubah pemisah pada kolom genre dari pipe ke koma-spasi
 ```python
 # Ubah pemisah genre dari pipe ke koma-spasi
