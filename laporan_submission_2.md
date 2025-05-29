@@ -296,7 +296,11 @@ merged_df['movie'] = merged_df['movieId'].map(movie2movie_encoded)
 n_users = len(user2user_encoded)
 n_movies = len(movie2movie_encoded)
 ```
-Membuat dua kamus (dictionary) yang memetakan ID asli (userId dan movieId) ke ID baru yang di-encode (bilangan bulat berurutan, dimulai dari 0) dan membuat kolom baru bernama `user` dan `movie` yang berisi versi ID yang sudah di encode.
+```bash
+Jumlah user unik: 610
+Jumlah movie unik: 9724
+```
+Membuat dua kamus (dictionary) yang memetakan ID asli (userId dan movieId) ke ID baru yang di-encode (bilangan bulat berurutan, dimulai dari 0) dan membuat kolom baru bernama `user` dan `movie` yang berisi versi ID yang sudah di encode. Lalu melihat jumlah unik `user` dan `movie` yang berguna untuk input size ke model.
 
 ### Menampilkan dataframe `merged_df` hasil penggabungan
 ```python
