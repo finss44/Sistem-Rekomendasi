@@ -267,7 +267,7 @@ Ukuran data training: 80668 | Ukuran data validasi: 20168
 ```
 Membagi data menjadi 80% data latih dan 20% data validasi, data latih digunakan untuk melatih atau membangun model dan data validasi digunakan untuk mengevaluasi model yang sudah dibangun.
 
-#### Vektorisasi Teks (TF-IDF)
+### Vektorisasi Teks (TF-IDF)
 Mengubah teks (genre) menjadi representasi numerik yang dapat diproses oleh komputer. TF-IDF adalah teknik pembobotan statistik yang digunakan untuk mengevaluasi seberapa penting sebuah kata dalam dokumen dalam sebuah korpus. Semakin tinggi nilai TF-IDF suatu kata, semakin relevan kata tersebut terhadap dokumen tertentu dalam korpus tersebut.
 
 Rumus:
