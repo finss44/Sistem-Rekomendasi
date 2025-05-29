@@ -226,7 +226,7 @@ ratings.drop_duplicates(inplace=True)
 Duplikat pada movies: 0
 Duplikat pada ratings: 0
 ```
-Melalukan drop atau penghapusan data duplikat, walaupun sudah dilakukan pengecekan ketika EDA, tetap melakukan penghapusan duplikat data agar lebih valid dan menampilkan hasil duplikat data tersebut.
+Melalukan drop atau penghapusan data duplikat, walaupun sudah dilakukan pengecekan ketika EDA, tetap melakukan penghapusan duplikat data agar lebih valid dan menampilkan hasil penghapusan duplikat data tersebut.
 
 ### Mengubah tipe data kolom `timestamp`
 ```python
@@ -297,6 +297,12 @@ n_users = len(user2user_encoded)
 n_movies = len(movie2movie_encoded)
 ```
 Membuat dua kamus (dictionary) yang memetakan ID asli (userId dan movieId) ke ID baru yang di-encode (bilangan bulat berurutan, dimulai dari 0) dan membuat kolom baru bernama `user` dan `movie` yang berisi versi ID yang sudah di encode.
+
+### Menampilkan dataframe `merged_df` hasil penggabungan
+```python
+# Menampilkan dataframe gabungan
+merged_df
+```
 
 ![merged](https://github.com/user-attachments/assets/bbefed64-b3ca-4404-a946-2ff51516509a)
 
