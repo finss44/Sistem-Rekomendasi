@@ -310,6 +310,7 @@ merged_df
 
 ![merged](https://github.com/user-attachments/assets/bbefed64-b3ca-4404-a946-2ff51516509a)
 
+Terlihat bahwa kolom dari dataframe `movies` dan `ratings` sudah tergabung menjadi 1 dataframe, selain itu bertambah 2 kolom hasil encoding yaitu `user` dan `movie`.
 ### Data Splitting
 ```python
 # Split data untuk model_nn
