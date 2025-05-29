@@ -125,7 +125,7 @@ Mengecek data duplikat pada dataframe movies dan hasilnya adalah tidak ada data 
 
 - Distribusi Jumlah Film tiap genre
 
-![genre](plotgenre.png)
+![genre](https://github.com/user-attachments/assets/17ce8fc6-efab-41d2-a345-def5748face1)
 
 Dari plot ini, kita bisa melihat genre-genre yang paling populer (memiliki jumlah film terbanyak) seperti Drama dan Comedy, hingga genre yang paling jarang seperti Film-Noir dan (no genres listed). Plot ini memberikan gambaran visual tentang komposisi genre dalam dataset film.
 
@@ -193,19 +193,19 @@ Mengecek data duplikat dan hasilnya tidak ada data yang duplikat pada dataset ra
 
 - Distribusi Rating Pengguna
 
-![plotratingpengguna](plotratingpengguna.png)
+![plotratingpengguna](https://github.com/user-attachments/assets/2096a5ea-4b52-41da-a48c-e8519d2d8375)
 
 Pada distribusi ini menunjukkan bahwa sebagian besar pengguna memberikan rating yang positif (3 ke atas), dengan fokus terbesar pada rating 4. Adanya pola bimodal (atau multimodal) menyarankan bahwa mungkin ada faktor-faktor berbeda yang mendorong pengguna untuk memberikan rating tertentu. Misalnya, rating 3 bisa jadi rating "standar yang baik", sementara rating 4 bisa jadi rating "luar biasa".
 
 - Distribusi Jumlah Rating Per Film
 
-![plotfilm](plotratingfilm.png)
+![plotfilm](https://github.com/user-attachments/assets/e7550575-03a5-4523-bcda-5ed72adb4610)
 
 Distribusi Sangat Miring ke Kanan (Right-Skewed), mayoritas film memiliki jumlah rating yang sangat sedikit. Batang histogram tertinggi berada di dekat angka 0, menunjukkan bahwa ribuan film hanya memiliki sedikit rating (mungkin 1-10 rating). Banyak Film dengan Jumlah Rating Sangat Sedikit, ada sekitar 7.000 film yang memiliki jumlah rating mendekati nol, atau sangat rendah (misalnya, di bawah 10 rating). Ini menunjukkan adanya "long tail" di mana sebagian besar film tidak mendapatkan banyak perhatian atau eksposur.
 
 - Distribusi Jumlah Rating Per User
 
-![plotuser](plotratingperuser.png)
+![plotuser](https://github.com/user-attachments/assets/a4be8154-77ea-4f80-8f89-a035ab9c9422)
 
 Distribusi Sangat Miring ke Kanan (Right-Skewed), sama seperti distribusi rating per film, distribusi jumlah rating per pengguna juga sangat miring ke kanan. Ini menunjukkan bahwa sebagian besar pengguna hanya memberikan sejumlah kecil rating. Banyak Pengguna dengan Jumlah Rating Sedikit, ada lebih dari 300 pengguna yang memberikan jumlah rating yang sangat rendah (misalnya, di bawah 100 rating). Ini menunjukkan bahwa sebagian besar pengguna mungkin merupakan pengguna "kasual" yang tidak terlalu aktif dalam memberikan rating.
 
@@ -253,7 +253,7 @@ n_movies = len(movie2movie_encoded)
 ```
 Membuat dua kamus (dictionary) yang memetakan ID asli (userId dan movieId) ke ID baru yang di-encode (bilangan bulat berurutan, dimulai dari 0) dan membuat kolom baru bernama `user` dan `movie` yang berisi versi ID yang sudah di encode.
 
-![merged](mergeddf.png)
+![merged](https://github.com/user-attachments/assets/bbefed64-b3ca-4404-a946-2ff51516509a)
 
 ### Data Splitting
 ```python
@@ -267,14 +267,10 @@ Ukuran data training: 80668 | Ukuran data validasi: 20168
 ```
 Membagi data menjadi 80% data latih dan 20% data validasi, data latih digunakan untuk melatih atau membangun model dan data validasi digunakan untuk mengevaluasi model yang sudah dibangun.
 
-## Modeling
-Pada tahap ini, kita akan membangun dua jenis sistem rekomendasi yang berbeda:
+#### Vektorisasi Teks (TF-IDF)
+Mengubah teks (genre) menjadi representasi numerik yang dapat diproses oleh komputer. TF-IDF adalah teknik pembobotan statistik yang digunakan untuk mengevaluasi seberapa penting sebuah kata dalam dokumen dalam sebuah korpus. Semakin tinggi nilai TF-IDF suatu kata, semakin relevan kata tersebut terhadap dokumen tertentu dalam korpus tersebut.
 
-### 1. Content-Based Filtering 
-
-Merekomendasikan item berdasarkan atribut atau konten item itu sendiri. Di sini kita akan menggunakan fitur teks (genre) dan menghitung kemiripan antar film.
-#### Vektorisasi Teks (TF-IDF): Mengubah teks (genre) menjadi representasi numerik yang dapat diproses oleh komputer. TF-IDF adalah teknik pembobotan statistik yang digunakan untuk mengevaluasi seberapa penting sebuah kata dalam dokumen dalam sebuah korpus. Semakin tinggi nilai TF-IDF suatu kata, semakin relevan kata tersebut terhadap dokumen tertentu dalam korpus tersebut.
-
+Rumus:
 $$TFIDF(t, d, D) = TF(t, d) \times IDF(t, D)$$
 
 Di mana:
@@ -282,7 +278,30 @@ Di mana:
 * `TF(t, d)` (**Term Frequency**) mengukur seberapa sering term `t` muncul dalam dokumen `d`. Semakin sering term muncul, semakin tinggi nilainya.
 * `IDF(t, D)` (**Inverse Document Frequency**) mengukur seberapa penting term `t` di seluruh korpus `D`. Nilai ini lebih tinggi untuk term yang jarang muncul di seluruh korpus, menunjukkan bahwa term tersebut lebih spesifik dan diskriminatif.
 
-#### Menghitung Kemiripan (Cosine Similarity): Setelah genre direpresentasikan sebagai vektor TF-IDF, kita dapat menghitung kemiripan antara dua film menggunakan Cosine Similarity. Cosine Similarity mengukur kosinus sudut antara dua vektor. Semakin kecil sudutnya (semakin dekat ke 0), semakin tinggi kemiripannya (nilai mendekati 1). 
+Cukup menggunakan dataset movies, yang memiliki kolom `tittle` dan `genres` untuk Content Based Filtering
+```python
+# TF-IDF Vectorizer
+tfidf = TfidfVectorizer()
+tfidf_matrix = tfidf.fit_transform(movies['genres'])
+
+# Mengubah vektor tf-idf dalam bentuk matriks dengan fungsi todense()
+tfidf_matrix.todense()
+```
+Mengonversi representasi tfidf_matrix dari format sparse matrix (matriks jarang) menjadi dense matrix (matriks padat)
+
+![tfidf](https://github.com/user-attachments/assets/f93ed343-0938-41ac-b7d8-ad6520709ab7)
+
+Gambar diatas adalah hasil representasi menggunakan `.todense()`
+
+## Modeling
+Pada tahap ini, kita akan membangun dua jenis sistem rekomendasi yang berbeda:
+
+### 1. Content-Based Filtering 
+
+Merekomendasikan item berdasarkan atribut atau konten item itu sendiri. Di sini kita akan menggunakan fitur teks (genre) dan menghitung kemiripan antar film.
+
+#### Menghitung Kemiripan (Cosine Similarity) 
+Setelah genre direpresentasikan sebagai vektor TF-IDF, kita dapat menghitung kemiripan antara dua film menggunakan Cosine Similarity. Cosine Similarity mengukur kosinus sudut antara dua vektor. Semakin kecil sudutnya (semakin dekat ke 0), semakin tinggi kemiripannya (nilai mendekati 1). 
 
 $$similarity(\mathbf{A}, \mathbf{B}) = \cos(\theta) = \frac{\mathbf{A} \cdot \mathbf{B}}{\|\mathbf{A}\| \|\mathbf{B}\|} = \frac{\sum_{i=1}^{n} A_i B_i}{\sqrt{\sum_{i=1}^{n} A_i^2} \sqrt{\sum_{i=1}^{n} B_i^2}}$$
 
@@ -319,13 +338,6 @@ Parameter yang digunakan yaitu `embedding_size=20`, `embeddings_initializer=he_n
 
 ### Training Model
 #### Content Based Filtering
-Cukup menggunakan dataset movies untuk CBF, yang memliki kolom `tittle` dan `genres`
-```python
-# TF-IDF Vectorizer
-tfidf = TfidfVectorizer()
-tfidf_matrix = tfidf.fit_transform(movies['genres'])
-```
-Tahap ini digunakan untuk mengubah data teks (dalam hal ini, genre film) menjadi format numerik yang dapat dipahami dan diproses oleh algoritma machine learning. Teknik yang digunakan adalah TF-IDF (Term Frequency-Inverse Document Frequency) Vectorization.
 ```python
 # Hitung cosine similarity antar film
 cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
@@ -466,7 +478,8 @@ recommended_df = get_genre_only_recommendations_df("Slacker (1991)", movies, cos
 print("\nTop 10 Rekomendasi Film yang mirip 'Slacker (1991)':")
 display(recommended_df)
 ```
-![evalcbf](evalcbf.png)
+
+![evalcbf](https://github.com/user-attachments/assets/6da58ac5-1e0a-4b5e-8376-0f72a910e9be)
 
 $$Precision = \frac{\text{Jumlah rekomendasi yang relevan}}{\text{Jumlah item yang direkomendasikan}} = \frac{10}{10} = 100%$$
 
@@ -478,12 +491,12 @@ Dari hasil evaluasi diatas, bisa dilihat bahwa precision yang didapatkan adalah 
 #### 1. Mean Absolute Error (MAE)
 MAE mengukur rata-rata dari selisih absolut antara nilai yang diprediksi dan nilai aktual. Dengan kata lain, ini adalah rata-rata besarnya kesalahan tanpa mempertimbangkan arahnya (apakah prediksi terlalu tinggi atau terlalu rendah).
 
-![mae](mae.png)
+![mae](https://github.com/user-attachments/assets/6bac2a72-eb02-4a82-b7e8-c96c2d603653)
 
 #### 2. Root Mean Squared Error (RMSE)
 RMSE mengukur akar kuadrat dari rata-rata kuadrat selisih antara nilai yang diprediksi dan nilai aktual. Dengan mengkuadratkan selisih, RMSE memberikan bobot yang lebih besar pada kesalahan yang lebih besar.
 
-![rmse](rmse.png)
+![rmse](https://github.com/user-attachments/assets/a7698034-5254-450e-8444-e03715f8fb12)
 
 ```bash
 Evaluasi Model:
@@ -501,7 +514,7 @@ RMSE (Root Mean Squared Error): 0.8745
 
 #### Visualisasi Loss dan MAE
 
-![lossdanmae](lossdanmae.png)
+![lossdanmae](https://github.com/user-attachments/assets/e4fcb272-0923-49a9-bf46-0e6005d5ed28)
 
 - Train Loss & MAE terus menurun seiring bertambahnya epoch, sehingga model terus belajar dari data training.
 - Validation Loss & MAE stagnan atau sedikit naik setelah beberapa epoch, sehingga model mulai kehilangan kemampuan generalisasi ke data yang tidak dilatih.
