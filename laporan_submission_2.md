@@ -123,6 +123,22 @@ Jumlah data duplikat: 0
 ```
 Mengecek data duplikat pada dataframe movies dan hasilnya adalah tidak ada data duplikat
 
+- Melihat struktur dan tipe data pada kolom `genres` menggunakan `.head()` dan `apply(type).value_counts()`.
+```bash
+0    Adventure|Animation|Children|Comedy|Fantasy
+1                     Adventure|Children|Fantasy
+2                                 Comedy|Romance
+3                           Comedy|Drama|Romance
+4                                         Comedy
+Name: genres, dtype: object
+genres
+<class 'str'>    9742
+```
+- Struktur Kolom `genres`: Output dari movies[`genres`].head() menunjukkan bahwa kolom `genres` berisi string, di mana setiap genre dipisahkan oleh karakter pipa (|). Contohnya: "Adventure|Animation|Children|Comedy|Fantasy".
+- Tipe Data Kolom `genres`:
+  - Name: genres, dtype: object: Ini menunjukkan bahwa kolom genres di dalam DataFrame movies memiliki tipe data object. Dalam Pandas, tipe object seringkali berarti kolom tersebut berisi string atau tipe data campuran lainnya.
+  - <class 'str'> 9742: Output dari movies[`genres`].apply(type).value_counts() lebih spesifik. Ini mengkonfirmasi bahwa semua 9742 entri (baris) dalam kolom `genres` adalah objek bertipe string (<class 'str'>). Ini penting karena memastikan konsistensi tipe data sebelum melakukan pemrosesan teks lebih lanjut.
+
 - Distribusi Jumlah Film tiap genre
 
 ![genre](https://github.com/user-attachments/assets/17ce8fc6-efab-41d2-a345-def5748face1)
@@ -234,28 +250,6 @@ Melalukan drop atau penghapusan data duplikat, walaupun sudah dilakukan pengecek
 ratings['timestamp'] = pd.to_datetime(ratings['timestamp'], unit='s')
 ```
 Lalu merubah tipe data kolom `'timestamp'` dari integer menjadi datetime, sehingga angka yang terlihat pada dataframe adalah waktu atau tanggal pengambilan data.
-
-### Menampilkan tipe data pada kolom `genres`
-```python
-# Melihat tipe data kolom genres
-print(movies['genres'].head())
-print(movies['genres'].apply(type).value_counts())
-```
-```bash
-0    Adventure|Animation|Children|Comedy|Fantasy
-1                     Adventure|Children|Fantasy
-2                                 Comedy|Romance
-3                           Comedy|Drama|Romance
-4                                         Comedy
-Name: genres, dtype: object
-genres
-<class 'str'>    9742
-```
-Selanjutnya melihat tipe data pada kolom genre:
-- Struktur Kolom 'genres': Output dari movies['genres'].head() menunjukkan bahwa kolom 'genres' berisi string, di mana setiap genre dipisahkan oleh karakter pipa (|). Contohnya: "Adventure|Animation|Children|Comedy|Fantasy".
-- Tipe Data Kolom 'genres':
-  - Name: genres, dtype: object: Ini menunjukkan bahwa kolom genres di dalam DataFrame movies memiliki tipe data object. Dalam Pandas, tipe object seringkali berarti kolom tersebut berisi string atau tipe data campuran lainnya.
-  - <class 'str'> 9742: Output dari movies['genres'].apply(type).value_counts() lebih spesifik. Ini mengkonfirmasi bahwa semua 9742 entri (baris) dalam kolom 'genres' adalah objek bertipe string (<class 'str'>). Ini penting karena memastikan konsistensi tipe data sebelum melakukan pemrosesan teks lebih lanjut.
 
 ### Mengubah pemisah pada kolom genre dari pipe ke koma-spasi
 ```python
